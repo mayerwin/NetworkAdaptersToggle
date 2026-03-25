@@ -9,7 +9,11 @@ public sealed class IniSettingsService
 
     public IniSettingsService()
     {
-        _filePath = GetSettingsPath();
+        var appData = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "NetworkAdaptersToggle");
+        Directory.CreateDirectory(appData);
+        _filePath = Path.Combine(appData, "settings.ini");
     }
 
     public HashSet<int> LoadSelectedIndexes()
@@ -59,41 +63,6 @@ public sealed class IniSettingsService
             lines.Add($"{index}=1");
         }
 
-        try
-        {
-            File.WriteAllLines(_filePath, lines);
-        }
-        catch (UnauthorizedAccessException)
-        {
-            // Fallback to AppData if writing next to exe fails (e.g., MSIX)
-            var fallback = GetFallbackPath();
-            File.WriteAllLines(fallback, lines);
-        }
-    }
-
-    private static string GetSettingsPath()
-    {
-        var exeDir = AppContext.BaseDirectory;
-        var candidate = Path.Combine(exeDir, "settings.ini");
-
-        // Check if we can write next to the exe
-        try
-        {
-            using var _ = File.Open(candidate, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-            return candidate;
-        }
-        catch
-        {
-            return GetFallbackPath();
-        }
-    }
-
-    private static string GetFallbackPath()
-    {
-        var appData = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "NetworkAdaptersToggle");
-        Directory.CreateDirectory(appData);
-        return Path.Combine(appData, "settings.ini");
+        File.WriteAllLines(_filePath, lines);
     }
 }
