@@ -278,7 +278,7 @@ public partial class MainWindow : Window
     {
         var psi = new System.Diagnostics.ProcessStartInfo
         {
-            FileName = "https://github.com/mayerwin/NetworkAdaptersToggle",
+            FileName = "https://github.com/mayerwin/Network-Adapters-Toggle",
             UseShellExecute = true
         };
         System.Diagnostics.Process.Start(psi);
