@@ -1,0 +1,16 @@
+## .NET
+bin/
+obj/
+publish/
+
+## IDE
+.vs/
+*.user
+*.suo
+
+## Build outputs
+*.pdb
+
+## Settings (user-specific)
+settings.ini
+.claude/settings.local.json
