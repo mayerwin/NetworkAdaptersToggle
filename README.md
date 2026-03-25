@@ -35,7 +35,7 @@ Your adapter selection is saved automatically to `settings.ini` next to the exe.
 
 ```bash
 # Clone the repo
-git clone https://github.com/yourusername/NetworkAdaptersToggle.git
+git clone https://github.com/mayerwin/NetworkAdaptersToggle.git
 cd NetworkAdaptersToggle
 
 # Build
