@@ -3,8 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- Color Palette -->
+        <!-- Color Palette — Catppuccin Mocha inspired -->
         <Color x:Key="BgColor">#1e1e2e</Color>
+        <Color x:Key="TitleBarColor">#181926</Color>
         <Color x:Key="SurfaceColor">#282a3a</Color>
         <Color x:Key="SurfaceLightColor">#313347</Color>
         <Color x:Key="BorderColor">#3b3d52</Color>
@@ -14,8 +15,10 @@
         <Color x:Key="RedColor">#ff5555</Color>
         <Color x:Key="AmberColor">#f1fa8c</Color>
         <Color x:Key="BlueColor">#8be9fd</Color>
+        <Color x:Key="MauveColor">#cba6f7</Color>
 
         <SolidColorBrush x:Key="BgBrush" Color="{StaticResource BgColor}"/>
+        <SolidColorBrush x:Key="TitleBarBrush" Color="{StaticResource TitleBarColor}"/>
         <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
         <SolidColorBrush x:Key="SurfaceLightBrush" Color="{StaticResource SurfaceLightColor}"/>
         <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
@@ -25,13 +28,18 @@
         <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}"/>
         <SolidColorBrush x:Key="AmberBrush" Color="{StaticResource AmberColor}"/>
         <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource BlueColor}"/>
+        <SolidColorBrush x:Key="MauveBrush" Color="{StaticResource MauveColor}"/>
 
-        <!-- Button Base Style -->
+        <!-- Row tint brushes: green = enabled (any non-disabled), red = disabled -->
+        <SolidColorBrush x:Key="RowGreenTintBrush" Color="#1f3a2a"/>
+        <SolidColorBrush x:Key="RowRedTintBrush" Color="#3a1f1f"/>
+
+        <!-- Action Button Base Style -->
         <Style x:Key="ActionButton" TargetType="Button">
             <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Padding" Value="16,9"/>
             <Setter Property="Margin" Value="4,0"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -66,9 +74,62 @@
             <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
         </Style>
 
+        <Style x:Key="UninstallButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
+            <Setter Property="Background" Value="#3a1a2a"/>
+            <Setter Property="Foreground" Value="{StaticResource MauveBrush}"/>
+        </Style>
+
         <Style x:Key="RefreshButton" TargetType="Button" BasedOn="{StaticResource ActionButton}">
             <Setter Property="Background" Value="#1a2a3a"/>
             <Setter Property="Foreground" Value="{StaticResource BlueBrush}"/>
+        </Style>
+
+        <!-- Chrome Window Button -->
+        <Style x:Key="ChromeButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDimBrush}"/>
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="#2a2c3e"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ChromeCloseButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDimBrush}"/>
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bg" Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bg" Property="Background" Value="#c42b1c"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <!-- CheckBox Style (dark theme) -->
@@ -83,7 +144,7 @@
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
             <Setter Property="RowBackground" Value="{StaticResource SurfaceBrush}"/>
-            <Setter Property="AlternatingRowBackground" Value="{StaticResource SurfaceLightBrush}"/>
+            <Setter Property="AlternatingRowBackground" Value="{StaticResource SurfaceBrush}"/>
             <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource BorderBrush}"/>
             <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
             <Setter Property="FontFamily" Value="Segoe UI Variable, Segoe UI"/>
@@ -113,19 +174,15 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SurfaceLightBrush}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <Style TargetType="DataGridRow">
             <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+            <Setter Property="Background" Value="{StaticResource RowGreenTintBrush}"/>
             <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SurfaceLightBrush}"/>
-                </Trigger>
+                <DataTrigger Binding="{Binding IsDisabled}" Value="True">
+                    <Setter Property="Background" Value="{StaticResource RowRedTintBrush}"/>
+                </DataTrigger>
             </Style.Triggers>
         </Style>
     </Application.Resources>

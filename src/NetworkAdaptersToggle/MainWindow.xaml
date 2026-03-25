@@ -3,124 +3,234 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:NetworkAdaptersToggle"
         Title="Network Adapters Toggle"
-        Height="520" Width="780"
-        MinHeight="400" MinWidth="600"
+        Height="540" Width="820"
+        MinHeight="420" MinWidth="650"
         Background="{StaticResource BgBrush}"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanResizeWithGrip">
+        WindowStyle="None"
+        ResizeMode="CanResize">
 
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="40"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0,0,0,1"
+                      UseAeroCaptionButtons="False"
+                      CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Margin="0,0,0,12">
-            <TextBlock Text="Network Adapters"
-                       FontFamily="Segoe UI Variable, Segoe UI"
-                       FontSize="22" FontWeight="Bold"
-                       Foreground="{StaticResource TextBrush}"/>
-            <TextBlock Text="Select adapters and use the buttons below to enable or disable them."
-                       FontFamily="Segoe UI Variable, Segoe UI"
-                       FontSize="12"
-                       Foreground="{StaticResource TextDimBrush}"
-                       Margin="0,4,0,0"/>
-        </StackPanel>
+    <Border x:Name="RootBorder" Background="{StaticResource BgBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- Adapter List -->
-        <Border Grid.Row="1" CornerRadius="8" BorderBrush="{StaticResource BorderBrush}"
-                BorderThickness="1" ClipToBounds="True">
-            <DataGrid x:Name="AdapterGrid"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      CanUserDeleteRows="False"
-                      CanUserReorderColumns="False"
-                      CanUserSortColumns="True"
-                      SelectionMode="Single"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal"
-                      IsReadOnly="False"
-                      RowHeight="36">
+            <!-- ═══ Custom Title Bar ═══ -->
+            <Grid Grid.Row="0" Background="{StaticResource TitleBarBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="" Width="40" CanUserSort="False">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                          HorizontalAlignment="Center"
-                                          Checked="OnAdapterSelectionChanged"
-                                          Unchecked="OnAdapterSelectionChanged"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                <!-- App icon + title -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="14,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE774;" FontFamily="Segoe MDL2 Assets" FontSize="15"
+                               Foreground="{StaticResource BlueBrush}" VerticalAlignment="Center" Margin="0,0,9,0"/>
+                    <TextBlock Text="Network Adapters Toggle"
+                               FontFamily="Segoe UI Variable, Segoe UI" FontSize="12.5" FontWeight="SemiBold"
+                               Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
 
-                    <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+                <!-- GitHub button -->
+                <Button Grid.Column="2" Click="BtnGitHub_Click"
+                        Cursor="Hand" VerticalAlignment="Center" Margin="0,0,4,0"
+                        ToolTip="View on GitHub — documentation &amp; releases"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="ghBorder" Background="Transparent" CornerRadius="4"
+                                    Padding="8,4" BorderThickness="1" BorderBrush="Transparent">
+                                <StackPanel Orientation="Horizontal">
+                                    <Viewbox Width="14" Height="14" Margin="0,0,5,0">
+                                        <Canvas Width="24" Height="24">
+                                            <Path Fill="{StaticResource TextDimBrush}"
+                                                  Data="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                                        </Canvas>
+                                    </Viewbox>
+                                    <TextBlock Text="GitHub" FontFamily="Segoe UI Variable, Segoe UI"
+                                               FontSize="11.5" FontWeight="SemiBold"
+                                               Foreground="{StaticResource TextDimBrush}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="ghBorder" Property="BorderBrush" Value="{StaticResource TextDimBrush}"/>
+                                    <Setter TargetName="ghBorder" Property="Background" Value="#252738"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
-                    <DataGridTemplateColumn Header="STATUS" Width="110" SortMemberPath="Status" CanUserSort="True">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Status}" FontWeight="SemiBold">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="{StaticResource TextDimBrush}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsUp}" Value="True">
-                                                    <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsDisabled}" Value="True">
-                                                    <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                <!-- Window control buttons -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal"
+                            WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Style="{StaticResource ChromeButton}" Click="BtnMinimize_Click">
+                        <TextBlock Text="&#xE921;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                    </Button>
+                    <Button x:Name="BtnMaxRestore" Style="{StaticResource ChromeButton}" Click="BtnMaximize_Click">
+                        <TextBlock x:Name="MaxRestoreIcon" Text="&#xE922;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                    </Button>
+                    <Button Style="{StaticResource ChromeCloseButton}" Click="BtnClose_Click">
+                        <TextBlock Text="&#xE8BB;" FontFamily="Segoe MDL2 Assets" FontSize="10"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
 
-                    <DataGridTextColumn Header="DESCRIPTION" Binding="{Binding InterfaceDescription}" Width="*" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="MAC" Binding="{Binding MacAddress}" Width="130" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="IDX" Binding="{Binding InterfaceIndex}" Width="50" IsReadOnly="True"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Border>
+            <!-- ═══ Main Content ═══ -->
+            <Grid Grid.Row="1" Margin="16,12,16,16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <!-- Button Bar -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0">
-            <Button x:Name="BtnEnable" Content="Enable Selected"
-                    Style="{StaticResource EnableButton}"
-                    Click="BtnEnable_Click"/>
-            <Button x:Name="BtnDisable" Content="Disable Selected"
-                    Style="{StaticResource DisableButton}"
-                    Click="BtnDisable_Click"/>
-            <Button x:Name="BtnRefresh" Content="Refresh"
-                    Style="{StaticResource RefreshButton}"
-                    Click="BtnRefresh_Click"/>
+                <!-- Subtitle -->
+                <TextBlock Grid.Row="0"
+                           Text="Select adapters and use the buttons below to enable, disable, or uninstall them."
+                           FontFamily="Segoe UI Variable, Segoe UI" FontSize="12"
+                           Foreground="{StaticResource TextDimBrush}"
+                           Margin="0,0,0,10"/>
 
-            <Separator Width="20" Visibility="Hidden"/>
+                <!-- Adapter List with proper rounded clipping -->
+                <Border Grid.Row="1" x:Name="GridBorder" CornerRadius="6"
+                        BorderBrush="{StaticResource BorderBrush}" BorderThickness="1"
+                        Background="{StaticResource SurfaceBrush}"
+                        SizeChanged="GridBorder_SizeChanged">
+                    <DataGrid x:Name="AdapterGrid"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              CanUserDeleteRows="False"
+                              CanUserReorderColumns="False"
+                              CanUserSortColumns="True"
+                              SelectionMode="Single"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="Horizontal"
+                              IsReadOnly="False"
+                              RowHeight="36"
+                              Background="Transparent"
+                              PreviewMouseLeftButtonDown="AdapterGrid_PreviewMouseLeftButtonDown">
 
-            <Button x:Name="BtnSelectAll" Content="Select All"
-                    Style="{StaticResource ActionButton}"
-                    Background="{StaticResource SurfaceLightBrush}"
-                    Foreground="{StaticResource TextDimBrush}"
-                    Click="BtnSelectAll_Click"/>
-            <Button x:Name="BtnSelectNone" Content="Select None"
-                    Style="{StaticResource ActionButton}"
-                    Background="{StaticResource SurfaceLightBrush}"
-                    Foreground="{StaticResource TextDimBrush}"
-                    Click="BtnSelectNone_Click"/>
-        </StackPanel>
+                        <DataGrid.Columns>
+                            <!-- Select-all checkbox in header -->
+                            <DataGridTemplateColumn Width="40" CanUserSort="False">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <CheckBox x:Name="HeaderCheckBox"
+                                                  HorizontalAlignment="Center"
+                                                  IsThreeState="True"
+                                                  Click="HeaderCheckBox_Click"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                  HorizontalAlignment="Center"
+                                                  Checked="OnAdapterSelectionChanged"
+                                                  Unchecked="OnAdapterSelectionChanged"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
-        <!-- Status Bar -->
-        <Border Grid.Row="3" Margin="0,10,0,0" Padding="10,6" CornerRadius="4"
-                Background="{StaticResource SurfaceBrush}">
-            <TextBlock x:Name="StatusText" Text="Loading adapters..."
-                       FontFamily="Segoe UI Variable, Segoe UI"
-                       FontSize="11.5"
-                       Foreground="{StaticResource TextDimBrush}"/>
-        </Border>
-    </Grid>
+                            <DataGridTextColumn Header="NAME" Binding="{Binding Name}" Width="*" IsReadOnly="True"/>
+
+                            <DataGridTemplateColumn Header="STATUS" Width="110" SortMemberPath="Status" CanUserSort="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Status}" FontWeight="SemiBold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{StaticResource TextDimBrush}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsUp}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource GreenBrush}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsDisabled}" Value="True">
+                                                            <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="DESCRIPTION" Binding="{Binding InterfaceDescription}" Width="*" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="MAC" Binding="{Binding MacAddress}" Width="130" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="IDX" Binding="{Binding InterfaceIndex}" Width="50" IsReadOnly="True"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <!-- Button Bar -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,12,0,0">
+                    <Button x:Name="BtnEnable" Style="{StaticResource EnableButton}" Click="BtnEnable_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                       VerticalAlignment="Center" Margin="0,0,7,0"/>
+                            <TextBlock Text="Enable" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="BtnDisable" Style="{StaticResource DisableButton}" Click="BtnDisable_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                       VerticalAlignment="Center" Margin="0,0,7,0"/>
+                            <TextBlock Text="Disable" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="BtnUninstall" Style="{StaticResource UninstallButton}" Click="BtnUninstall_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                       VerticalAlignment="Center" Margin="0,0,7,0"/>
+                            <TextBlock Text="Uninstall" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Separator Width="12" Visibility="Hidden"/>
+
+                    <Button x:Name="BtnRefresh" Style="{StaticResource RefreshButton}" Click="BtnRefresh_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="13"
+                                       VerticalAlignment="Center" Margin="0,0,7,0"/>
+                            <TextBlock Text="Refresh" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <!-- Status Bar (copyable) -->
+                <Border x:Name="StatusBorder" Grid.Row="3" Margin="0,10,0,0" Padding="10,7" CornerRadius="6"
+                        Background="{StaticResource SurfaceBrush}"
+                        BorderThickness="1" BorderBrush="{StaticResource BorderBrush}">
+                    <TextBox x:Name="StatusText" Text="Loading adapters..."
+                             FontFamily="Segoe UI Variable, Segoe UI"
+                             FontSize="11.5"
+                             Foreground="{StaticResource TextDimBrush}"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             IsReadOnly="True"
+                             TextWrapping="Wrap"
+                             Padding="0"
+                             Cursor="IBeam"
+                             CaretBrush="{StaticResource TextDimBrush}"
+                             SelectionBrush="{StaticResource BlueBrush}"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

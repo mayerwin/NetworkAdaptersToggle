@@ -13,6 +13,7 @@
     <RootNamespace>NetworkAdaptersToggle</RootNamespace>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>false</SelfContained>
+    <PublishDir>..\..\publish\</PublishDir>
   </PropertyGroup>
 
 </Project>
